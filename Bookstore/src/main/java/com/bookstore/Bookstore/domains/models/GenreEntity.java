@@ -60,4 +60,11 @@ public class GenreEntity {
     public void setBooks(List<BookEntity> books) {
         this.books = books;
     }
+
+    @Override
+    public String toString() {
+        return String.format("""
+                {"id":"%s", "name": "%s"}
+                """,String.valueOf(this.getId()), this.name);
+    }
 }
