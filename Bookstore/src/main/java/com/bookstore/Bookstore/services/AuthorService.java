@@ -2,9 +2,12 @@ package com.bookstore.Bookstore.services;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.bookstore.Bookstore.domains.models.AuthorEntity;
 import com.bookstore.Bookstore.domains.repository.IAuthorRepository;
 
+@Service
 public class AuthorService {
     IAuthorRepository authorRepository;
 

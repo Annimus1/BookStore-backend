@@ -3,9 +3,12 @@ package com.bookstore.Bookstore.services;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import com.bookstore.Bookstore.domains.models.OrderEntity;
 import com.bookstore.Bookstore.domains.repository.IOrderRepository;
 
+@Service
 public class OrderService {
     IOrderRepository orderRepository;
 

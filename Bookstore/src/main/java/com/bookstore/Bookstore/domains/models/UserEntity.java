@@ -1,12 +1,15 @@
 package com.bookstore.Bookstore.domains.models;
 
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -43,16 +46,19 @@ public class UserEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private GregorianCalendar modifiedAt;
 
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    private List<OrderEntity> orders;
+
     public UserEntity() {
     }
 
-    public UserEntity(String name, String lastName, String phone, String email, String password, String role) {
+    public UserEntity(String name, String lastName, String phone, String email, String password) {
         this.name = name;
         this.lastName = lastName;
         this.phone = phone;
         this.email = email;
         this.password = password;
-        Role = role;
+        Role = "Customer";
         this.createdAt = new GregorianCalendar();
         this.modifiedAt = new GregorianCalendar();
     }

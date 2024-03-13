@@ -1,10 +1,14 @@
 package com.bookstore.Bookstore.services;
 
+import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
 
 import com.bookstore.Bookstore.domains.models.GenreEntity;
 import com.bookstore.Bookstore.domains.repository.IGenreRepository;
 
+@Service
 public class GenreService {
     IGenreRepository genreRepository;
 
@@ -33,5 +37,9 @@ public class GenreService {
     
     public GenreEntity getByName(String name){
         return this.genreRepository.findByName(name);
+    }
+
+    public List<GenreEntity> getAllGenres(){
+        return this.genreRepository.findAll();
     }
 }

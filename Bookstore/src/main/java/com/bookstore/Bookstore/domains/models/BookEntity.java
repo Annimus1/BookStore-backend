@@ -1,13 +1,22 @@
 package com.bookstore.Bookstore.domains.models;
 
+
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -36,20 +45,30 @@ public class BookEntity {
     @Temporal(TemporalType.DATE)
     private GregorianCalendar releaseDate;
     
-    @Basic
-    private String cover;
+    @OneToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @JoinColumn(name = "picture_id")
+    private PictureEntity cover;
 
-    @Basic
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private AuthorEntity author;
    
-    @Basic
-    private String genres;
-    
+    @ManyToMany
+    @JoinTable(
+        name = "book_genre",
+        joinColumns = @JoinColumn(name = "book_id"),
+        inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<GenreEntity> genres;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = true)
+    private OrderEntity orders;   
     // Constructors
     public BookEntity() {}
 
     public BookEntity(String name, String description, String iSBN, int pages, double price, float puntuation,
-            int quantity, GregorianCalendar releaseDate, String cover, String author, String genres) {
+            int quantity, GregorianCalendar releaseDate, PictureEntity cover, AuthorEntity author, List<GenreEntity> genres,OrderEntity orders) {
         this.name = name;
         this.description = description;
         ISBN = iSBN;
@@ -61,6 +80,7 @@ public class BookEntity {
         this.cover = cover;
         this.author = author;
         this.genres = genres;
+        this.orders = orders;
     }
 
 
@@ -137,27 +157,38 @@ public class BookEntity {
         this.releaseDate = releaseDate;
     }
 
-    public String getCover() {
+    public PictureEntity getCover() {
         return cover;
     }
 
-    public void setCover(String cover) {
+    public void setCover(PictureEntity cover) {
         this.cover = cover;
     }
 
-    public String getAuthor() {
+    public AuthorEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(AuthorEntity author) {
         this.author = author;
     }
 
-    public String getGenres() {
+    public List<GenreEntity> getGenres() {
         return genres;
     }
 
-    public void setGenres(String genres) {
+    public void setGenres(List<GenreEntity> genres) {
         this.genres = genres;
     }
+
+    public OrderEntity getOrders() {
+        return orders;
+    }
+
+    public void setOrders(OrderEntity orders) {
+        this.orders = orders;
+    }
+
+   
+    
 }

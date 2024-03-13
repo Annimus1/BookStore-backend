@@ -1,5 +1,7 @@
 package com.bookstore.Bookstore.domains.models;
 
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,6 +9,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -23,15 +27,18 @@ public class AuthorEntity {
     private String description;
     
     @OneToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @JoinColumn(name = "picture_id")
     private PictureEntity image;
 
-    private String books;
+    @Column(nullable = true)
+    @OneToMany(mappedBy = "author")
+    private List<BookEntity> books;
     
     // Constructors
 
     public AuthorEntity() {}
 
-    public AuthorEntity(long id, String name, String description, PictureEntity image, String books) {
+    public AuthorEntity(long id, String name, String description, PictureEntity image, List<BookEntity> books) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -39,7 +46,7 @@ public class AuthorEntity {
         this.books = books;
     }
 
-    public AuthorEntity(String name, String description, PictureEntity image, String books) {
+    public AuthorEntity(String name, String description, PictureEntity image, List<BookEntity> books) {
         this.name = name;
         this.description = description;
         this.image = image;
@@ -79,11 +86,11 @@ public class AuthorEntity {
         this.image = image;
     }
 
-    public String getBooks() {
+    public List<BookEntity> getBooks() {
         return books;
     }
 
-    public void setBooks(String books) {
+    public void setBooks(List<BookEntity> books) {
         this.books = books;
     }
     
