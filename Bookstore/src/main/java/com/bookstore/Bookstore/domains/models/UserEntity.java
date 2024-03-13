@@ -3,6 +3,8 @@ package com.bookstore.Bookstore.domains.models;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.bookstore.Bookstore.domains.dto.UserRequest;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -58,7 +60,20 @@ public class UserEntity {
         this.phone = phone;
         this.email = email;
         this.password = password;
-        Role = "Customer";
+        this.Role = "Customer";
+        this.orders = List.of();
+        this.createdAt = new GregorianCalendar();
+        this.modifiedAt = new GregorianCalendar();
+    }
+
+    public UserEntity(UserRequest userRequest){
+        this.name = userRequest.getName();
+        this.lastName = userRequest.getLastName();
+        this.phone = userRequest.getPhone();
+        this.email = userRequest.getEmail();
+        this.password = userRequest.getPassword();
+        this.Role = "Customer";
+        this.orders = List.of();
         this.createdAt = new GregorianCalendar();
         this.modifiedAt = new GregorianCalendar();
     }
@@ -135,5 +150,13 @@ public class UserEntity {
         this.modifiedAt = modifiedAt;
     }
 
+    @Override
+    public String toString() {
+        return String.format("""
+                {"id":"%s", "name": "%s", "lastName": "%s", "phone": "%s", "email": "%s"}
+                """,String.valueOf(this.getId()), this.name,this.lastName, this.phone, this.email);
+    }
+
+    
     
 }
