@@ -42,4 +42,9 @@ public class BookService {
     public List<BookEntity> getAllBooks(){
         return bookRepository.findAll();
     }
+
+    public List<BookEntity> getBooksByAuthor(long id){
+        System.out.println(id);
+        return bookRepository.findByAuthorId(id);
+    }
 }

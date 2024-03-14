@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bookstore.Bookstore.domains.dto.AuthorRequest;
 import com.bookstore.Bookstore.domains.dto.BookRequest;
 import com.bookstore.Bookstore.domains.models.AuthorEntity;
 import com.bookstore.Bookstore.domains.models.BookEntity;
@@ -30,6 +32,7 @@ import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("/api/book")
+@CrossOrigin("http://localhost:5173")
 public class BookController {
     @Autowired
     BookService bookService;
@@ -60,17 +63,33 @@ public class BookController {
         }
     }
     
-    // return books by genre 
-    //  @PostMapping(value = "/", consumes = "application/json", produces = "application/json")
-    // public ArrayList<Book> getAuthorByName(@RequestBody GenreRequest request){
-    //     Long author_id = jpaMainController.getAuthorIdByName(request.getName());
-        
-    //     if(author_id<0){
-    //         return new ArrayList<Book>();
-    //     }
-        
-    //     return jpaMainController.getBooksByAuthorId(author_id);
-    // }
+    /**
+     * Bring the books by the name of the author
+     * @param @link AuthorRequest were we only care about the name.
+     * @return List<BookEntity>
+    */
+    @PostMapping(value = "/", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<List<BookEntity>> getAuthorByName(@RequestBody AuthorRequest request){
+        System.out.println(request.getName());
+        try{
+            AuthorEntity author = authorService.getByName(request.getName());
+            if(author!=null){
+
+                long author_id = author.getId();
+                
+                if(author_id<0 || author == null){
+                    return ResponseEntity.notFound().build();
+                }
+                // Todo:
+                // return books where author_id = author id
+                return ResponseEntity.ok().body(bookService.getBooksByAuthor(author_id));
+            }else{
+                throw new Exception("the author is null");
+            }
+        }catch (Exception err){
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     //Create
     //Privated path
@@ -134,28 +153,6 @@ public class BookController {
 
         return ResponseEntity.created(null).build();
     }
-
-    // //Update
-    // //Privated path
-    // @PutMapping(value = "/book/auth/{id}", consumes = "application/json", produces = "application/json")
-    // public ResponseEntity<String> editBook(@PathVariable long id, @RequestBody BookRequest request){
-    //     if(request.getDescription().length() > 1024){
-
-    //         return new ResponseEntity<>("Description too long: "+request.getDescription().length(), HttpStatus.BAD_REQUEST);
-    //     }
-
-    //     try{
-    //         Book book = jpaMainController.getBook(id);
-    //         book = BookService.checkDifferences(book,request,jpaMainController);
-    //         jpaMainController.editBook(book);
-
-    //     }catch (Exception e){
-    //         System.out.println("Error update book: "+e);
-    //         return new ResponseEntity<>("Error while update book.", HttpStatus.FORBIDDEN);
-    //     }
-
-    //     return new ResponseEntity<>(HttpStatus.OK);
-    // }
 
     //Delete
     //Privated path
