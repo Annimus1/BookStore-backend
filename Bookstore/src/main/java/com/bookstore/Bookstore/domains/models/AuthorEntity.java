@@ -2,6 +2,8 @@ package com.bookstore.Bookstore.domains.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,8 +32,9 @@ public class AuthorEntity {
     @JoinColumn(name = "picture_id")
     private PictureEntity image;
 
+    @JsonIgnore
     @Column(nullable = true)
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<BookEntity> books;
     
     // Constructors
