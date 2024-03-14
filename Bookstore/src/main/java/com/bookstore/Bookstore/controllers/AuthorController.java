@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import com.bookstore.Bookstore.services.PictureService;
 
 @RestController
 @RequestMapping("/api/author")
+@CrossOrigin("http://localhost:5173")
 public class AuthorController {
     @Autowired
     AuthorService authorService;
@@ -75,15 +77,6 @@ public class AuthorController {
         
         return ResponseEntity.created(null).build();        
     }
-    
-    
-    // // privated path
-    // @PutMapping(value = "/auth/{id}", consumes = "application/json", produces = "application/json")
-    // public ResponseEntity<String> editAuthor(@PathVariable long id, @RequestBody request request){
-    //     /*
-    //     * Edit an existing author with the data coming from the json request.
-    //     */        
-    // } 
 
     // // Privated path
     @DeleteMapping("/auth/{id}")
