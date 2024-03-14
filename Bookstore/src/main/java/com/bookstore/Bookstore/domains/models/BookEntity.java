@@ -4,6 +4,8 @@ package com.bookstore.Bookstore.domains.models;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -54,13 +56,12 @@ public class BookEntity {
     private AuthorEntity author;
    
     @ManyToMany
-    @JoinTable(
-        name = "book_genre",
-        joinColumns = @JoinColumn(name = "book_id"),
-        inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
+    @JoinTable(name = "book_genre",
+    joinColumns = @JoinColumn(name = "book_id"),
+    inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<GenreEntity> genres;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = true)
     private OrderEntity orders;   

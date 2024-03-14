@@ -1,5 +1,6 @@
 package com.bookstore.Bookstore.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -36,5 +37,9 @@ public class BookService {
     
     public BookEntity getByName(String name){
         return this.bookRepository.findByName(name);
+    }
+
+    public List<BookEntity> getAllBooks(){
+        return bookRepository.findAll();
     }
 }
