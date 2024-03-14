@@ -1,5 +1,6 @@
 package com.bookstore.Bookstore.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -37,4 +38,10 @@ public class AuthorService {
     public AuthorEntity getByName(String name){
         return this.authorRepository.findByName(name);
     }
+
+    public List<AuthorEntity> getAllAuthors(){
+        return this.authorRepository.findAll();
+    }
+
+    
 }
