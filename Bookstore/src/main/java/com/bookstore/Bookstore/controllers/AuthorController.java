@@ -24,7 +24,7 @@ import com.bookstore.Bookstore.services.AuthorService;
 import com.bookstore.Bookstore.services.PictureService;
 
 @RestController
-@RequestMapping("/api/author")
+@RequestMapping("/api/")
 @CrossOrigin("http://localhost:5173")
 public class AuthorController {
     @Autowired
@@ -34,13 +34,13 @@ public class AuthorController {
     PictureService pictureService;
 
     // public path
-    @GetMapping("/")
+    @GetMapping("author/")
     public ResponseEntity<List<AuthorEntity>> getAuthors(){
         return ResponseEntity.ok().body(authorService.getAllAuthors());
     }
     
     // public path
-    @GetMapping("/{id}")
+    @GetMapping("author/{id}")
     public ResponseEntity<AuthorEntity> getAuthor(@PathVariable long id){
         Optional<AuthorEntity> authorOpt = authorService.getById(id);
         if(authorOpt.isPresent()){
@@ -53,7 +53,7 @@ public class AuthorController {
     }
     
     // privated path
-    @PostMapping(value = "/auth/new", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "auth/author/new", consumes = "application/json", produces = "application/json")
     public ResponseEntity<String> newAuthor(@RequestBody AuthorRequest request){
         
         // if the lenght is greater than 1024 can't save it on the database
@@ -79,7 +79,7 @@ public class AuthorController {
     }
 
     // // Privated path
-    @DeleteMapping("/auth/{id}")
+    @DeleteMapping("auth/author/{id}")
     public ResponseEntity<String> deleteAuthor(@PathVariable long id){
         try {
             authorService.deleteAuthorById(id);

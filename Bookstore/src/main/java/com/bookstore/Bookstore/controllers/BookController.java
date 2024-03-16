@@ -31,7 +31,7 @@ import com.bookstore.Bookstore.services.PictureService;
 import jakarta.transaction.Transactional;
 
 @RestController
-@RequestMapping("/api/book")
+@RequestMapping("/api/")
 @CrossOrigin("http://localhost:5173")
 public class BookController {
     @Autowired
@@ -47,13 +47,13 @@ public class BookController {
     GenreService genreService;
     
     //Public path
-    @GetMapping("/")
+    @GetMapping("book/")
     public ResponseEntity<List<BookEntity>> getBooks(){
         return ResponseEntity.ok().body(bookService.getAllBooks());
     }
 
     //Public path
-    @GetMapping("/{id}")
+    @GetMapping("book/{id}")
     public ResponseEntity<BookEntity> getBookById(@PathVariable long id){
         Optional<BookEntity> bookOpt = bookService.getById(id);
         if(bookOpt.isPresent()){
@@ -68,7 +68,7 @@ public class BookController {
      * @param @link AuthorRequest were we only care about the name.
      * @return List<BookEntity>
     */
-    @PostMapping(value = "/", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "book/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<List<BookEntity>> getAuthorByName(@RequestBody AuthorRequest request){
         System.out.println(request.getName());
         try{
@@ -94,7 +94,7 @@ public class BookController {
     //Create
     //Privated path
     @Transactional
-    @PostMapping(value = "/auth/new", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "auth/book/new", consumes = "application/json", produces = "application/json")
     public ResponseEntity<String> createBook(@RequestBody BookRequest request){
         // if description is greater than 1024 don't save it into the database
         if(request.getDescription().length() > 1024){
@@ -156,7 +156,7 @@ public class BookController {
 
     //Delete
     //Privated path
-    @DeleteMapping(value = "/auth/{id}")
+    @DeleteMapping(value = "auth/book/{id}")
     public ResponseEntity<String> deleteBook(@PathVariable long id){
         try {
             bookService.deleteBookById(id);

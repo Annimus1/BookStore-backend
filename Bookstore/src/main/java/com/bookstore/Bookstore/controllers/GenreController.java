@@ -19,20 +19,20 @@ import com.bookstore.Bookstore.domains.models.GenreEntity;
 import com.bookstore.Bookstore.services.GenreService;
 
 @RestController
-@RequestMapping("api/genre")
+@RequestMapping("/api/")
 @CrossOrigin("http://localhost:5173")
 public class GenreController {
     @Autowired
     GenreService genreService;
     //Public path
-    @GetMapping("/")
+    @GetMapping("genre/")
     public ResponseEntity<List<GenreEntity>> getGenres(){
         List<GenreEntity> genres =  genreService.getAllGenres();
         return ResponseEntity.ok().body(genres);
     }
 
     //Public path
-    @GetMapping("/{id}")
+    @GetMapping("genre/{id}")
     public ResponseEntity<String> getGenre(@PathVariable long id){
         Optional<GenreEntity> genre =  genreService.getById(id);
         if(genre.isPresent()){
@@ -47,7 +47,7 @@ public class GenreController {
     }
 
     //Privated path
-    @PostMapping(value = "/auth/new")
+    @PostMapping(value = "auth/genre/new")
     public ResponseEntity<String> createGenre(@RequestBody GenreEntity request){
         try{
             // Create new genre
@@ -62,7 +62,7 @@ public class GenreController {
     }
 
     //Privated path
-    @DeleteMapping("/auth/{id}")
+    @DeleteMapping("auth/genre/{id}")
     public ResponseEntity<String> deleteGenre(@PathVariable long id){
         try{
             genreService.deleteGenreById(id);

@@ -1,67 +1,43 @@
 package com.bookstore.Bookstore.controllers;
 
-import com.bookstore.Bookstore.domains.dto.UserRequest;
+import com.bookstore.Bookstore.domains.dto.JwtResponseDto;
+import com.bookstore.Bookstore.domains.dto.UserRequestDto;
 import com.bookstore.Bookstore.domains.models.UserEntity;
+import com.bookstore.Bookstore.services.AuthService;
 import com.bookstore.Bookstore.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/")
 public class UserController {
     @Autowired
     UserService userService;
+    @Autowired
+    AuthService authService;
     
-    // Public Endpoint
-    @PostMapping(value = "/auth/register", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> Register(@RequestBody UserRequest request){
-        System.out.println(request.getEmail());
-        
-        try{  
-            // create the user
-
-            UserEntity user = new UserEntity(request);
-            UserEntity userCreated = userService.createUser(user);
-            System.out.println("User creared.");
-            
-            ResponseEntity<String> resp = ResponseEntity.ok().body(userCreated.toString());
-            return resp;
-            
-        }catch(Exception e){
-            System.out.println("Error on Register: "+e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PostMapping(path = "register")
+    public ResponseEntity<UserEntity> save(@RequestBody UserRequestDto customerDtoNew) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(new UserEntity(customerDtoNew)));
     }
+
+    @PostMapping(path = "login")
+    public ResponseEntity<JwtResponseDto> signIn(@RequestBody UserRequestDto authCustomerDto) {
+        return ResponseEntity.ok(authService.signIn(authCustomerDto));
+    }
+
     
-    
-    // public path
-    // @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
-    // public ResponseEntity<String> Login(@RequestBody UserApp request){
-        
-    //     JpaMainController jpaMainController = new JpaMainController();
-        
-    //     try{  
-    //         // get the user
-    //         UserApp user = jpaMainController.getUser(request.getEmail());
-          
-    //         // check if email and password match
-    //         if( user != null && LoginServices.match(request.getPassword(), user.getPassword())){
-                
-    //             // at this point should send the headers in order to
-    //             // allow see the protected paths.
-    //             // ---------------------------------------------------------------------------
-    //             return new ResponseEntity<>("Passwd & email matches.",HttpStatus.OK);
-    //         }
-            
-    //         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-            
-    //     }catch(Exception e){
-    //         System.out.println("Error on Register: "+e);
-    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-    // }
+    @PostMapping(path = "sing-out")
+    public ResponseEntity<JwtResponseDto> signOut(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String jwt) {
+        return ResponseEntity.ok(authService.signOut(jwt));
+    }
+
 }
