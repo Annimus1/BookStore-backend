@@ -3,6 +3,8 @@ package com.bookstore.Bookstore.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bookstore.Bookstore.domains.models.UserEntity;
@@ -17,7 +19,20 @@ public class UserService {
     }
 
     public UserEntity createUser(UserEntity user){
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return this.userRepository.save(user);
+    }
+
+    public UserEntity updateUser(UserEntity user){
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String passwd = passwordEncoder.encode(user.getPassword());
+        UserEntity oldUser = this.userRepository.findById(user.getId()).get();
+        if(passwd.equals(oldUser.getPassword())){
+            return this.userRepository.save(user);
+        }else{
+            return this.createUser(user);
+        }
     }
 
     public void deleteUser(UserEntity user){
