@@ -1,13 +1,13 @@
 package com.bookstore.Bookstore.domains.dto;
 
-public class UserRequest {
+public class UserRequestDto {
     private String name; 
     private String lastName;
     private String phone; 
     private String email; 
     private String password;
     
-    public UserRequest(String name, String lastName, String phone, String email, String password) {
+    public UserRequestDto(String name, String lastName, String phone, String email, String password) {
         this.name = name;
         this.lastName = lastName;
         this.phone = phone;

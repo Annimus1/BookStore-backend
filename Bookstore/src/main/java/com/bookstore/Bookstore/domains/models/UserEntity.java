@@ -3,7 +3,7 @@ package com.bookstore.Bookstore.domains.models;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import com.bookstore.Bookstore.domains.dto.UserRequest;
+import com.bookstore.Bookstore.domains.dto.UserRequestDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -66,7 +66,7 @@ public class UserEntity {
         this.modifiedAt = new GregorianCalendar();
     }
 
-    public UserEntity(UserRequest userRequest){
+    public UserEntity(UserRequestDto userRequest){
         this.name = userRequest.getName();
         this.lastName = userRequest.getLastName();
         this.phone = userRequest.getPhone();
